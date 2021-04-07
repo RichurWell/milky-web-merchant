@@ -81,6 +81,11 @@ export default {
 		// 创建商家
 	    zmodalHandleOk(e, values) {
 			console.log(values,this.address)
+			 if(!(/^1[3456789]\d{9}$/.test(values.mobile))){ 
+				return this.$message.error(
+					'请输入正确的电话号码'
+				)
+			} 
 			axios
 				.post(`/api/merchant/create`, {
 					merchantUid:localStorage.getItem("uid"),
@@ -104,6 +109,7 @@ export default {
 				.finally((res) => {
 					this.okLoading = false
 					this.visibleAddModal=false
+					this.getTableDatas()
 				})
 		},
 		onSelected(data){

@@ -65,6 +65,11 @@ export default {
 		// 创建员工
 		zmodalHandleOk(e, values) {
 			console.log(values)
+			 if(!(/^1[3456789]\d{9}$/.test(values.mobile))){ 
+				return this.$message.error(
+					'请输入正确的电话号码'
+				)
+			} 
 			axios
 				.post(`/api/contact/create`, {
 					customerUid: localStorage.getItem("customerUid"),

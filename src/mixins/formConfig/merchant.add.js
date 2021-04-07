@@ -11,21 +11,32 @@ export const addFormMixin = {
                         props: "name",
                         type: "input",
                         label: "姓名",
-                        col:12
-                       
+                        col:12,
+                        rules: [{
+                            required: true,
+                            message: this.$t("common.verify.required")
+                        }],
                 },
                  {
                     props: "description",
                     type: "input",
                     label: "简介",
-                    col:12
+                    col:12,
+                    rules: [{
+                        required: true,
+                        message: this.$t("common.verify.required")
+                    }],
                    
                 },
                 {
                     props:"mobile",
                     type:'input',
                     label:"手机号码",
-                    col:12
+                    col:12,
+                    rules: [{
+                        required: true,
+                        message: this.$t("common.verify.required")
+                    }],
                 },
                 {
                     props: "status",
@@ -50,7 +61,11 @@ export const addFormMixin = {
                             text: '暂停营业',
                             value: '4',
                         },
-                    ]
+                    ],
+                    rules: [{
+                        required: true,
+                        message: this.$t("common.verify.required")
+                    }],
                 },
                 {
                     props: "source",
@@ -62,7 +77,11 @@ export const addFormMixin = {
                             text: 'Internal',
                             value: 'Internal',
                         },
-                    ]
+                    ],
+                    rules: [{
+                        required: true,
+                        message: this.$t("common.verify.required")
+                    }],
                 },
 
                 ],
