@@ -18,19 +18,23 @@
 				:visible="visibleAddModal"
 				@handleOk="zmodalHandleOk"
 				@handleCancel="zmodalHandleCancel"
-				@submit="handleSubmit"
 				:destroyOnClose="true"
 				size="middle"
 				:formConfig="zmodalFormConfig"
 		      >  
 			  <template>
-				   <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }" @submit="handleSubmit">
-				   <a-form-item label="地址" :label-col="{ span: 4 }"  >
-                        <v-distpicker></v-distpicker>
+				   <a-form  :label-col="{ span: 4 }" :wrapper-col="{ span: 18 }">
+				   <a-form-item label="地址">
+                        <v-distpicker  @selected="onSelected" :province="select.province" :city="select.city" :area="select.area"></v-distpicker>
+                    </a-form-item>
+					 <a-form-item label="具体地址" :label-col="{ span: 4 }"  >
+						 <a-input placeholder="请输入具体地址" v-model="address"/>
                     </a-form-item>
 					 </a-form>
 			  </template>
 			</zmodal>
+
+			
 		
 		</div>
 	</div>
@@ -51,10 +55,12 @@ export default {
 				addPageUrl: '',
 				queryApi: '/api/merchant/page',
 			},
+			select: { province: '广东省', city: '广州市', area: '海珠区' },
+			address:""
+			
 		}
 	},
 	beforeCreate() {
-    this.form = this.$form.createForm(this, { name: 'validate_other' });
   },
 	methods: {
 		operationsHandle(record, type) {
@@ -72,13 +78,23 @@ export default {
 		 zmodalHandleCancel(e) {
 				this.visibleAddModal = false;
 		},
-		// 创建员工
-		zmodalHandleOk(e, values) {
-			console.log(values)
-		     return
+		// 创建商家
+	    zmodalHandleOk(e, values) {
+			console.log(values,this.address)
 			axios
 				.post(`/api/merchant/create`, {
-					merchantUid:localStorage.getItem("uid")
+					merchantUid:localStorage.getItem("uid"),
+					customerUid:localStorage.getItem("customerUid"),
+					name:values.name,
+					description:values.description,
+					mobile:values.mobile,
+					status:values.status,
+					source:values.source,
+					country:"中国",
+					state:this.select.province,
+					city:this.select.city,
+					area:this.select.area,
+					address:this.address,
 				})
 				.then((res) => {
 					this.$message.success('Successful')
@@ -89,6 +105,12 @@ export default {
 					this.okLoading = false
 					this.visibleAddModal=false
 				})
+		},
+		onSelected(data){
+			console.log("333",data)
+			this.select.province=data.province.value
+			this.select.city=data.city.value
+			this.select.area=data.area.value
 		},
 		handleSubmit(value){
 			console.log("submit",value)
@@ -118,5 +140,17 @@ export default {
 }
 .addItem{
 
+}
+.distpicker-address-wrapper select{
+	padding: 0;
+	font-size: 12px;
+	height: 30px;
+	border: 1px solid #b7becb;
+}
+.ant-col-4 {
+    display: block;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 14.666667%;
 }
 </style>
